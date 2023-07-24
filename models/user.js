@@ -49,6 +49,7 @@ userSchema.methods.getCart = function (product) {
   });
 
   return Product.find({ _id: { $in: productIds } })
+    .lean()
     .then(products => {
       return products.map(p => {
         return {
@@ -59,6 +60,16 @@ userSchema.methods.getCart = function (product) {
         }
       })
     });
+}
+
+userSchema.methods.removeFromCart = function (productId) {
+  const productIndex = this.cart.findIndex(p => {
+    return p.productId.toString() === productId;
+  })
+
+  this.cart.splice(productIndex, 1);
+
+  return this.save();
 }
 
 module.exports = mongoose.model('User', userSchema);
