@@ -6,7 +6,7 @@ let _db;
 // CuFZvsz9hYgUXUB2
 const mongoConnect = (callback) => {
     MongoClient.connect(
-        `mongodb+srv://sps398:CuFZvsz9hYgUXUB2@cluster0.tuxrxta.mongodb.net/?retryWrites=true&w=majority`
+        `mongodb+srv://sps398:CuFZvsz9hYgUXUB2@cluster0.tuxrxta.mongodb.net/shop?retryWrites=true&w=majority`
     )
     .then(client => {
         console.log('connected to mongodb...');
@@ -15,7 +15,7 @@ const mongoConnect = (callback) => {
     })
     .catch(err => {
         console.log(err);
-        throw err;
+        throw err;  
     })
 }
 

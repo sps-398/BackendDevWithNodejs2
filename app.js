@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const { mongoConnect } = require('./util/database');
+const User = require('./models/user');
 // const Product = require('./models/product');
 // const User = require('./models/user');
 // const Cart = require('./models/cart');
@@ -21,13 +22,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    // User.findByPk(1)
-    // .then(user => {
-    //     req.user=user;
-    //     next();
-    // })
-    // .catch(err => console.log(err));
-    next();
+    User.findById('64bdfc0906db3d3c2923bbb1')
+    .then(user => {
+        req.user=user;
+        next();
+    })
+    .catch(err => console.log(err));
 })
 
 app.use('/admin', adminRoutes);
