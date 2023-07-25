@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Product = require('./product');
 
 const Schema = mongoose.Schema;
 
@@ -43,25 +42,6 @@ userSchema.methods.addToCart = function (product) {
   return this.save();
 }
 
-userSchema.methods.getCart = function (product) {
-  const productIds = this.cart.map(i => {
-    return i.productId;
-  });
-
-  return Product.find({ _id: { $in: productIds } })
-    .lean()
-    .then(products => {
-      return products.map(p => {
-        return {
-          ...p,
-          quantity: this.cart.find(cp => {
-            return cp.productId.toString() === p._id.toString();
-          }).quantity
-        }
-      })
-    });
-}
-
 userSchema.methods.removeFromCart = function (productId) {
   const productIndex = this.cart.findIndex(p => {
     return p.productId.toString() === productId;
@@ -69,6 +49,11 @@ userSchema.methods.removeFromCart = function (productId) {
 
   this.cart.splice(productIndex, 1);
 
+  return this.save();
+}
+
+userSchema.methods.clearCart = function () {
+  this.cart = [];
   return this.save();
 }
 
